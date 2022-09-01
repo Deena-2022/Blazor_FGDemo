@@ -1,0 +1,461 @@
+﻿@page "/Signup"
+@layout LoginLayout
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SIGNUP</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <style>
+        body {
+            padding: 0px;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+        }
+
+        .navbar a {
+            display: block;
+            font-size: 12px;
+            color: #13254b;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        label {
+            font-size: 16px
+        }
+
+
+        .navbar a,
+        .navbar a:active {
+            color: #162547;
+        }
+
+        .navbar-toggler-icon {
+            background-color: rgb(7, 8, 8);
+        }
+    </style>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg p-4 px-5 ml-5 mb-3">
+        <a href="#" class="navbar-brand ml-5">
+            <img src="/Images/fg_logo.png" class="ml-5">
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start mr-3">
+
+            <div class="navbar-nav ml-auto action-buttons mr-5 pr-5">
+                <a href="#" class="nav-item nav-link mr-4">FEATURES</a>
+                <div class="nav-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle mr-4">INDUSTRIES</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Web Design</a>
+                        <a href="#" class="dropdown-item">Web Development</a>
+                        <a href="#" class="dropdown-item">Graphic Design</a>
+                        <a href="#" class="dropdown-item">Digital Marketing</a>
+                    </div>
+                </div>
+                <a href="#" class="nav-item nav-link mr-4 ">FAQS</a>
+                <a href="#" class="nav-item nav-link mr-4">CONTACT <span class="ml-1">US</span> </a>
+                <a href="@("Login1")" class="nav-item nav-link mr-4">LOGIN</a>
+                <div class="nav-item dropdown mr-5 ">
+                    <a href="#" class="btn text-white px-4" style="background-color:#113ca0;border-radius: 40px;">
+                        SIGN
+                        UP
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="card-title  text-center mb-5" style="font-size: 48px; color: #2e58af; font-weight: 300;">
+        Try FieldGroove
+        Free for 7 Days!
+    </div>
+    <EditForm Model="user">
+        @if (show)
+        {
+            <div class=" container">
+                <!-- <div class="row " > -->
+
+                <div class="row justify-content-center ">
+
+                    <div class="col-12  col-md-4 col-lg-4 p-4 " @*id="firstDiv" *@ style="background-color:#162547;">
+
+                        <h5 class="text-white mt-3 text-decoration-underline" style="font-weight: 400">Account Info</h5>
+
+
+                        <label class="text-white">First Name*</label>
+                        <input type="text" class="w-100 mt-1 p-1" id="Firstname" @bind-value="user.Firstname" onkeypress="return Validate(event)">
+                        <span asp-validation-for="Firstname" class="text-danger"></span>
+
+                        <div style="color:orangered;font-size:16px;" id="Errorname"></div>
+
+                        <div class="my-2 ">
+                            <label class="text-white">Last Name*</label>
+                            <input type="text" class="w-100 mt-1 p-1" id="Lastname" @bind-value="user.Lastname" onkeypress="return Validatelname(event)">
+                            <div style="color:orangered;font-size:16px;" id="Errorlname"></div>
+                            <span asp-validation-for="Lastname" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="text-white">Company Name*</label>
+                            <input type="text" class="w-100  mt-1 p-1" id="Companyname" @bind-value="user.Companyname" onkeypress="return Validatecom(event)">
+                            <div style="color:orangered;font-size:16px;" id="Errorcom"></div>
+                            <span asp-validation-for="Companyname" class="text-danger"></span>
+
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-white">Phone*</label>
+                            <input type="tel" class="w-100  mt-1 p-1" id="Phone" @bind-value="user.Phone" maxlength="10" onkeypress="return Validatephone(event)">
+                            <div style="color:orangered;font-size:16px;" id="ErrorPhone"></div>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-white">Email*</label><br />
+                            <input type="email" class="w-100  mt-1 p-1" id="Email" @bind-value="user.Email" onkeyup="EmailValidate();" required>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <div id="lblError" style="color: red"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-white">Password*</label>
+
+                            <input type="password" class="w-100  mt-1 p-1" id="Password" @bind-value="user.Password" onkeyup="Validatepassword();">
+
+                            <i class="@this.TxtType" @onclick="ShowPassword"></i>
+                            <div style="color:orangered;font-size:16px;" id="lblpass"></div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2 ">
+                            <label class="text-white ">Password Again*</label>
+
+                            <input type="password" class="w-100  mt-1 p-1" @bind-value="user.Passwordagain" id="Passwordagain">
+                            <span asp-validation-for="Passwordagain" class="text-danger"></span>
+                            <div id="CheckPasswordMatch"></div>
+
+                        </div>
+                        <div class="mb-2 ">
+                            <label class="text-white mb-2">Time Zone*</label>
+                            <select class="w-100  mb-3 p-2" id="Time_Zone" asp-for="Timezone">
+                                <option selected value="Central Standard Time">Central Standard Time</option>
+                                <option value="Indian Standard Time">Indian Standard Time</option>
+                                <option value="Pacific Time">Pacific Time</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="mt-3  ">
+
+                            <button type="button" class="btn float-end  mb-5 py-2 text-white"
+                                    style="background-color: #E36156;width:45%" @onclick="Next">
+                                Next
+                            </button>
+
+                        </div>
+
+
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-6  p-4 " style="background-color: #f2f5f8">
+                        <h5 class="text mt-4" style="color: orangered;">SIGN UP NOW TO START YOUR FREE TRIAL</h5>
+                        <p class="my-3" style="color: #1B3365; font-weight: 400; font-size: 16px;    font-weight: 400; letter-spacing: 1px; ">
+                            FieldGroove empowers you to manage every aspect of your <br>
+                            contracting business anytime, anywhere, and from any <br>
+                            device.Enjoy a free trial where you can experience <br>
+                            everything FieldGroove has to offer, including:
+                        </p>
+                        <ul class="list-unstyled"
+                            style="color: #1B3365; font-weight: 500; letter-spacing: 0.05em; ">
+                            <li class="list-item mb-3">
+                                <img src="/Images/icon-item.png" />
+                                Managing the entire job cycle from lead creation to post-job <span class="ml-4">reporting</span>
+                            </li>
+                            <li class="list-item ">
+                                <img src="/Images/icon-item.png" /> Monitoring pipeline and backlog numbers, in real time
+                            </li>
+                            <li class="list-item my-3">
+                                <img src="/Images/icon-item.png" />
+                                Building estimates for your prospects to review and accept <br><span class="ml-4">via email or on the job site</span>
+                            </li>
+                            <li class="list-item ">
+                                <img src="/Images/icon-item.png" /> Keeping close track of your team, equipment, inventory, and <br>
+                                <span class="ml-4">jobs</span>
+                            </li>
+                            <li class="list-item my-3"> <img src="/Images/icon-item.png" /> Automating scheduling and dispatching</li>
+                            <li class="list-item"> <img src="/Images/icon-item.png" /> Preparing work orders and load tickets with one click</li>
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>}
+        else
+        {
+            <div class=" container">
+                <!-- <div class="row " > -->
+                <div class="row justify-content-center ">
+                    <div class="col-12 col-lg-4  p-4 py-5" @*id="secondDiv" *@ style="background-color:#162547;">
+
+                        <h5 class="text-white mt-3 text-decoration-underline" style="font-weight: 400">
+                            Office Address <i class="fa fa-question-circle" style="font-size:15px"></i>
+                        </h5>
+                        <div class="mb-2 ">
+                            <label class="text-white">Street Address 1*</label>
+                            <input type="text" class="w-100 mt-1 p-1" @bind-value="user.Streetaddress_1" id="Add1">
+                            <span asp-validation-for="Streetaddress_1" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2 ">
+                            <label class="text-white">Street Address 2</label>
+                            <input type="text" class="w-100 mt-1 p-1" @bind-value="user.Streetaddress_2" id="Address">
+                            <span asp-validation-for="Streetaddress_2" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-white">City*</label><br />
+                            <input type="text" class="w-100 mt-1 p-1" @bind-value="user.City" pattern="[A-Za-z]{1,50}$" id="City" onkeypress="return Validatecity(event)">
+                            <div style="color:orangered;font-size:16px;" id="Errorcity"></div>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-white">State*</label><br />
+                            <input type="text" @bind-value="user.State" class="w-100 mt-1 p-1" pattern="[A-Za-z]{1,50}$" id="State" onkeypress="return Validatestate(event)">
+                            <div style="color:orangered;font-size:16px;" id="Errorstate"></div>
+                            <span asp-validation-for="State" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label class="text-white">Zip*</label><br />
+                            <input type="tel" class="w-100 mt-1 p-1" @bind-value="user.Zip" id="Zip" maxlength="6" onkeypress="return ValidateZip(event);">
+                            <div style="color:orangered;font-size:16px;" id="ErrorZip"></div>
+                            <span asp-validation-for="Zip" class="text-danger"></span>
+                        </div>
+                        <div class="mt-4 pb-5">
+
+                            <button type="button" class="btn  py-2" @onclick="Back"
+                                    style="width: 49%; float: left; background-color: #172648; border: solid 1px #2D3B58; color: rgba(255, 255, 255, 0.5);">
+                                Back
+                            </button>
+
+                            <button type="submit" class="btn text-white  ml-2 py-2" id="onsubmit" onclick="next(); return false;"
+                                    style="background-color: #E36156;width:48%">
+                                Sign Up
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-md-4 col-lg-6  p-4 " style="background-color: #f2f5f8">
+                        <h5 class="text mt-4" style="color: orangered;">SIGN UP NOW TO START YOUR FREE TRIAL</h5>
+                        <p class="my-3" style="color: #1B3365; font-weight: 400; font-size: 16px;    font-weight: 400; letter-spacing: 1px; ">
+                            FieldGroove empowers you to manage every aspect of your <br>
+                            contracting business anytime, anywhere, and from any <br>
+                            device.Enjoy a free trial where you can experience <br>
+                            everything FieldGroove has to offer, including:
+                        </p>
+                        <ul class="list-unstyled"
+                            style="color: #1B3365; font-weight: 500; letter-spacing: 0.05em; ">
+                            <li class="list-item mb-3">
+                                <img src="/Images/icon-item.png" />
+                                Managing the entire job cycle from lead creation to post-job <span class="ml-4">reporting</span>
+                            </li>
+                            <li class="list-item ">
+                                <img src="/Images/icon-item.png" /> Monitoring pipeline and backlog numbers, in real time
+                            </li>
+                            <li class="list-item my-3">
+                                <img src="/Images/icon-item.png" />
+                                Building estimates for your prospects to review and accept <br><span class="ml-4">via email or on the job site</span>
+                            </li>
+                            <li class="list-item ">
+                                <img src="/Images/icon-item.png" /> Keeping close track of your team, equipment, inventory, and <br>
+                                <span class="ml-4">jobs</span>
+                            </li>
+                            <li class="list-item my-3"> <img src="/Images/icon-item.png" /> Automating scheduling and dispatching</li>
+                            <li class="list-item"> <img src="/Images/icon-item.png" /> Preparing work orders and load tickets with one click</li>
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>}
+
+    </EditForm>
+    <div class="card-footer  text-center p-5 mt-5"
+         style="background: #fff; border: #fff; font-size: 37px; color: #2e58af;">
+        Frequently Asked Questions
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-4">
+            <h6 style=" color: #2E59B0; font-weight: 700;">Will my card on file be charged?</h6>
+            <p class="py-2 border-bottom" style="font-size: 17px; color: #1A3265;">
+                We don’t charge anything at all before or during the trial <br>
+                period. The card on file is simply so we know you’re a<br>
+                person, not a robot.
+            </p>
+
+        </div>
+        <div class="col-12 col-lg-4">
+            <h6 style="color: #2E59B0; font-weight: 700;">Can I cancel my free trial at any time?</h6>
+            <p class="py-2 border-bottom" style="font-size: 17px; color: #1A3265;">
+                Absolutely. All we ask is that you give FieldGroove a fair shot, <br>
+                because it is rare that we can’t improve your business!
+            </p>
+
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-4">
+            <h6 style="color: #2E59B0; font-weight: 700;">How long is my free trial?</h6>
+            <p class="py-2 border-bottom" style="font-size: 17px; color: #1A3265;">The free trial is for 7 days.</p>
+
+        </div>
+        <div class="col-12 col-lg-4">
+            <h6 style="color: #2E59B0; font-weight: 700;">Can I cancel my free trial at any time?</h6>
+            <p class="py-2 border-bottom" style="font-size: 17px; color: #1A3265;">
+                We have several resources (documents and videos) for<br>
+                training. The portal has a button you can click to send instant<br>
+                questions, and you will be assigned a personal point of <br>
+                contact who will be available to assist as needed.
+            </p>
+
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12 col-lg-4">
+            <h6 style="color: #2E59B0; font-weight: 700;">
+                Do you have customer representatives to answer<br>
+                questions during my trial?
+            </h6>
+            <p class="py-2" style="font-size: 17px; color: #1A3265;">
+                We have several resources (documents and videos) for<br>
+                training. The portal has a button you can click to send instant<br>
+                questions, and you will be assigned a personal point of <br>
+                contact who will be available to assist as needed.
+            </p>
+        </div>
+        <div class="col-12 col-lg-4">
+            <h6 style="color: #2E59B0; font-weight: 700;">Can I cancel my free trial at any time?</h6>
+            <p class="py-2" style="font-size: 17px; color: #1A3265;">
+                Typically, you’ll find that you can’t live without us! Before the<br>
+                end of the trial, we will be providing you with a quote for <br>
+                continuing the subscription. We will also be working closely <br>
+                with you toward a seamless transition. After the initial 7 days <br>
+                trial, with your acceptance of our quote and your approval,<br>
+                we will start charging for the monthly subscription. We will <br>
+                provide you with all the tools necessary for on-boarding as <br>
+                well.
+            </p>
+        </div>
+    </div>
+    <div class="row mt-4 ">
+        <div class="col text-center ">
+            <ul class="mini-links d-inline-flex " style="list-style-type:none;">
+                <li class="item ">
+
+                    <a href="" style="color: #162547;font-size: 14px;font-weight: 500;">
+                        FEATURES <span class="mx-3">|</span>
+                    </a>
+                </li>
+
+                <li class="item ">
+                    <a href="" style="color: #162547;font-size: 14px;font-weight: 500;">
+                        FAQS <span class="mx-3">|</span>
+                    </a>
+                </li>
+                <li class="item ">
+                    <a href="" style="color: #162547;font-size: 14px;font-weight: 500;">
+                        CONTACT US <span class="mx-3">|</span>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="" style="color: #162547;font-size: 14px;font-weight: 500;">
+                        LOGIN <span class="mx-3">|</span>
+                    </a>
+                </li>
+                <li class="item ">
+                    <a href="" style="color: #162547;font-size: 14px;font-weight: 500;">SIGN UP </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer p-5  " style="background-color:#162547">
+        <div class="row">
+            <div class="col-1">
+
+            </div>
+            <div class="col-12 col-lg-6 mt-3 " style="font-size: 13px;
+          font-weight: 400; color: rgba(255, 255, 255, 0.5);">
+
+                <img src="/Images/logo-footer (1).jpg">
+                <div class="mt-3">Copyright © FieldGroove, LLC 2022. All Rights Reserved.</div>
+                <div class="my-2">716 Newman Springs Road, Suite 307 Lincroft, NJ 07738</div>
+                <div><a href="" style="color: orangered;">Privacy Policy</a></div>
+
+            </div>
+
+            <div class="col-12 col-lg-4  mt-3  p-4" style="font-size: 13px;
+  font-weight: 400; color: rgba(255, 255, 255, 0.5);">
+                <div class="mt-1">We would love to show you the power of FieldGroove.To setup</div>
+                <div class="my-2">a demo or get an account setup, please contact us at</div>
+                <a href="" style="color: orangered;">sales@fieldgroove.com</a>
+                or by phone at <a href="" style="color: orangered;">212-537-0218</a>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+@code{
+    public List<User> Users { get; set; } = new List<User>();
+
+    User user = new User();
+
+
+    protected  void OnInitialized()
+    {
+        Users = new List<User>();
+        show = true;
+        base.OnInitialized();
+    }
+    private bool show =true;
+
+    private void Next()
+    {
+        show=true;
+
+    }
+    private void Back()
+    {
+        show = true;
+    }
+    public string Password { get; set; }
+
+    public string TxtType = "password";
+
+    public string PasswordStyle = "bi bi-eye-slash ";
+    public void ShowPassword()
+    {
+        if (this.TxtType == "password")
+        {
+            this.TxtType = "text";
+            this.PasswordStyle = "bi bi-eye-slash ";
+        }
+        else
+        {
+            this.TxtType = "password";
+            this.PasswordStyle = "bi bi-eye-slash ";
+        }
+    }
+
+}
