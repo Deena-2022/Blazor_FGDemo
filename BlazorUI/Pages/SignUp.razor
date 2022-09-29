@@ -129,9 +129,9 @@
                         <div class="mb-2">
                             <label class="text-white">Password*</label>
 
-                            <input type="password" class="w-100  mt-1 p-1" id="Password" @bind-value="user.Password" onkeyup="Validatepassword();">
+                            <input type="@this.TxtType" class="w-100  mt-1 p-1" id="Password" @bind-value="user.Password" onkeyup="Validatepassword();">
 
-                            <i class="@this.TxtType" @onclick="ShowPassword"></i>
+                            <i class=oi-eye @onclick="ShowPassword"></i>
                             <div style="color:orangered;font-size:16px;" id="lblpass"></div>
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
@@ -139,6 +139,8 @@
                             <label class="text-white ">Password Again*</label>
 
                             <input type="password" class="w-100  mt-1 p-1" @bind-value="user.Passwordagain" id="Passwordagain">
+                            <i class=oi-eyedropper @onclick="ShowPassword"></i>
+
                             <span asp-validation-for="Passwordagain" class="text-danger"></span>
                             <div id="CheckPasswordMatch"></div>
 

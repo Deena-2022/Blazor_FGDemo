@@ -20,12 +20,13 @@ namespace FG_CoreAPI.Controllers
             this.unitOfWork = unitOfWork;
         }
         [HttpPost]
-        public string Post([FromBody] User user)
+        public JsonResult Post([FromBody] User user)
         {
+            string msg = "email already exist";
             var validEmail = unitOfWork.user.FindByCondition(x => x.Email == user.Email).FirstOrDefault();
             if (validEmail!=null)
             {
-                return "Email Already Exists";
+                return Ok(msg);
             }
             else
             {

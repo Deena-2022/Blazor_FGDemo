@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FG.DataEntity\FG.DataEntity.csproj" />
-    <ProjectReference Include="..\FG_CoreAPI\FG_CoreAPI.csproj" />
   </ItemGroup>
 
 </Project>
