@@ -1,7 +1,6 @@
 using BlazorUI.Data;
 using BlazorUI.services;
 using BlazorUI.DataContext;
-using BlazorUI.services;
 using FG.DataEntity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -16,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazorUI.Repositories;
+using Syncfusion.Blazor;
 
 namespace BlazorUI
 {
@@ -40,16 +40,20 @@ namespace BlazorUI
             services.AddScoped<ISignUpServices, SignUpServices>();
             services.AddScoped<ILeadServices, LeadRepository>();
             services.AddScoped<LeadServices>();
+            services.AddServerSideBlazor();
+            services.AddSyncfusionBlazor();
             services.AddHttpClient<ILeadRepository, LeadRepository1>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:44359/");
             });
+            services.AddMvc(o => o.EnableEndpointRouting = false).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-          if (env.IsDevelopment())
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NzI5NTQxQDMyMzAyZTMzMmUzMEsva2ZvVC9WZXdrT3h4ZXdHRGduWWtWZzhway9RUE1BZXFtTFhhM2V5RzA9");
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -62,9 +66,7 @@ namespace BlazorUI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

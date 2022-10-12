@@ -1,5 +1,5 @@
 ﻿@page "/fetchdata"
-
+@using Syncfusion.Blazor.Calendars
 @using BlazorUI.Data
 @inject WeatherForecastService ForecastService
 
@@ -35,7 +35,7 @@ else
         </tbody>
     </table>
 }
-
+<SfCalendar TValue="DateTime" />
 @code {
     private WeatherForecast[] forecasts;
 

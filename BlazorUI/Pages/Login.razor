@@ -1,7 +1,10 @@
 ﻿@page "/Login1"
+@using BlazorUI.Shared
 @layout LoginLayout
 @inject ISignUpServices signupservices
 @inject NavigationManager navigationManager
+@using Syncfusion.Blazor.Inputs
+
 <nav class="navbar navbar-expand-lg p-4 px-lg-5 ml-lg-5 mb-3">
     <a href="#" class="navbar-brand ml-5">
         <img src="/Images/fg_logo.png" class="ml-lg-5">
@@ -34,59 +37,62 @@
         </div>
     </div>
 </nav>
+<div>
+
+</div>
 <div class="container ">
     <!-- <div class="row " > -->
     <div class="row justify-content-center ">
         <div class="col-12 col-md-4 col-lg-4  p-4" style="background-color: #162647">
-           <h5 class="text-white mt-3 text-decoration-underline">SIGN IN</h5>
-           <EditForm Model="@user" OnInvalidSubmit="Submit">
-               <DataAnnotationsValidator />
-               <label class="text-white" style="font-size: 17px;">Email</label><br />
-               <InputText type="email" id="Email" class="w-100  my-1 p-1" @bind-Value="user.Email" />
-               <ValidationMessage For="@(()=>user.Email)" />
+            <h5 class="text-white mt-3 text-decoration-underline">SIGN IN</h5>
+            <EditForm Model="@user" OnInvalidSubmit="Submit">
+                <DataAnnotationsValidator />
+                <label class="text-white" style="font-size: 17px;">Email</label><br />
+                <InputText type="email" id="Email" class="w-100  my-1 p-1" @bind-Value="user.Email" />
+                <ValidationMessage For="@(()=>user.Email)" />
 
-               <label class="text-white mt-1" style="font-size: 17px;">Password</label>
-
-
-               <InputText type="password" id="Password" class="w-100 my-1 p-1" @bind-Value="user.Password" />
-               <i class="bi bi-eye-slash" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
-               <ValidationMessage For="@(()=>user.Password)" />
+                <label class="text-white mt-1" style="font-size: 17px;">Password</label>
 
 
-               <div class="mt-2">
-                   <input type="checkbox">
-                   <label class="text-white mb-4">Remember Me</label>
-               </div>
+                <InputText type="password" id="Password" class="w-100 my-1 p-1" @bind-Value="user.Password" />
+                <i class="bi bi-eye-slash" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+                <ValidationMessage For="@(()=>user.Password)" />
 
-               <div class="mb-5">
 
-                   <button type="button" class="btn py-2 px-2 " style="width: 49%; color: rgba(255, 255, 255, 0.5); border: 2px solid #2d3b58">Forgot Password?</button>
+                <div class="mt-2">
+                    <input type="checkbox">
+                    <label class="text-white mb-4">Remember Me</label>
+                </div>
 
-                   <button type="submit" class="btn  py-2 ml-1 text-white" style="width: 48%; background-color: #E36156; border: 2px solid #E36156 ">
-                       Sign In <i class="fa fa-chevron-right"></i>
-                   </button>
+                <div class="mb-5">
 
-               </div>
-               
-           </EditForm>
+                    <button type="button" class="btn py-2 px-2 " style="width: 49%; color: rgba(255, 255, 255, 0.5); border: 2px solid #2d3b58">Forgot Password?</button>
+
+                    <button type="submit" class="btn  py-2 ml-1 text-white" style="width: 48%; background-color: #E36156; border: 2px solid #E36156 ">
+                        Sign In <i class="fa fa-chevron-right"></i>
+                    </button>
+
+                </div>
+
+            </EditForm>
         </div>
 
-            <div class="col-12 col-md-4 col-lg-6  p-4 " style="background-color: #f2f5f8;width:">
-                <h3 style="color:red;font-size:23px"> @message</h3>
-                <h5 class="text-danger mt-3">NEED AN ACCOUNT?</h5>
-                <p class="my-3" style="color: #162547; font-weight: 400; font-size: 17px; letter-spacing: 1px;">
-                    Create an account to start managing<br>
-                    your company. Click the "Create New Account"<br>
-                    button below to get started
-                </p>
+        <div class="col-12 col-md-4 col-lg-6  p-4 " style="background-color: #f2f5f8;width:">
+            <h3 style="color:red;font-size:23px"> @message</h3>
+            <h5 class="text-danger mt-3">NEED AN ACCOUNT?</h5>
+            <p class="my-3" style="color: #162547; font-weight: 400; font-size: 17px; letter-spacing: 1px;">
+                Create an account to start managing<br>
+                your company. Click the "Create New Account"<br>
+                button below to get started
+            </p>
 
-                <button type="submit" class="btn text-white" style="background-color:#162547" @onclick="Navigate">
-                    Create New Account
-                </button>
+            <button type="submit" class="btn text-white" style="background-color:#162547" @onclick="Navigate">
+                Create New Account
+            </button>
 
-            </div>
         </div>
     </div>
+</div>
 <div class="row mt-5 ">
     <div class="col text-center ">
         <ul class="mini-links d-inline-flex  " style="list-style-type: none; display:block ">
@@ -176,25 +182,24 @@ font-weight: 400; color: rgba(255, 255, 255, 0.5);">
 
     public List<User> Users { get; set; } = new List<User>();
 
-    User user = new User();
+    public User user = new User();
 
     protected void Navigate()
     {
         navigationManager.NavigateTo("SignUp");
     }
-    protected  override void OnInitialized()
+    protected override void OnInitialized()
     {
-        Users  = new List<User>();
+        Users = new List<User>();
         base.OnInitialized();
     }
     private async Task<bool> Submit()
     {
 
-        var result = signupservices.FindByCondition(x => x.Email.Equals(user.Email) && x.Password == user.Password).FirstOrDefault();
-        if (result == null)
+        user = signupservices.FindByCondition(x => x.Email.Equals(user.Email) && x.Password == user.Password).FirstOrDefault();
+        if (user == null)
         {
             message = "Login Failed.....!";
-
         }
         else
         {

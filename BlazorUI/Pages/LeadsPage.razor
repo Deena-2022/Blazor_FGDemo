@@ -3,6 +3,11 @@
 @inject ILeadServices leadServices
 @inject NavigationManager navigationManager
 @inject IJSRuntime JSRuntime
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Popups
+
 
 <!DOCTYPE html>
 <html>
@@ -17,13 +22,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.0/css/dataTables.bootstrap5.min.css" />
-
     <link href="~/Scripts/free-jqGrid/plugins/css/ui.multiselect.css" rel="stylesheet" />
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
           crossorigin="anonymous">
-   
+
     <style>
 
         body {
@@ -64,7 +67,7 @@
         }
     </style>
 </head>
-<body >
+<body>
     <nav class="navbar navbar-expand-lg p-0" style="background-color: #388ED9;width:102%">
         <a class="navbar-brand border-right " href="#">
             <img src="/Images/nav-logo (1).png" class="mr-2" width="90">
@@ -236,7 +239,7 @@
                 {
 
 
-                    <table class=" table table-bordered display" id="example"   >
+                    <table class=" table table-bordered display" id="example">
                         <thead>
                             <tr class="table-secondary ">
                                 <th>Name</th>
@@ -298,12 +301,63 @@
                             }
                         </tbody>
                     </table>
+                    <SfGrid @ref="leadGrid" TValue="Lead" DataSource="lead" AllowSorting="true" Toolbar="@(new List<string>(){"Add","Edit","Delete"})"
+                            AllowGrouping="true" ColumnMenuItems=@MenuItems AllowFiltering="true" ShowColumnMenu="true" AllowPaging="true">
+                        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
+                        <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
+                        <GridEvents TValue="Lead" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell" ></GridEvents>
+                        <GridPageSettings PageSize="2"></GridPageSettings>
+                        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true" Dialog="DialogParams" >
+                            <HeaderTemplate>@GetHeaderText(context as Lead)</HeaderTemplate>
+                            <FooterTemplate>
+                                <SfButton OnClick="@Save" IsPrimary="true">@SaveButton</SfButton>
+                                <SfButton OnClick="@Cancel">Cancel</SfButton>
+                            </FooterTemplate>
+                        </GridEditSettings>
+
+                        <GridColumns>
+                            <GridColumn Field=@nameof(leadClass.Lname) HeaderText="Name"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LProject_Name) HeaderText="Project Name"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LStatus) HeaderText="Status"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LAdded) HeaderText="Added"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LType) HeaderText="Type"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LContact) HeaderText="Contact"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LAction) HeaderText="Action"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LAssignee) HeaderText="Assignee"></GridColumn>
+                            <GridColumn Field=@nameof(leadClass.LBid_Date) HeaderText="Bid Date"></GridColumn>
+
+                        </GridColumns>
+
+                    </SfGrid>
                 }
             </div>
             <hr style="height: 0.01px;color: #EEE;">
             <div class="text-center p-2 mb-3" style=" color: #999;font-size: 10px;">© FieldGroove, LLC 2022. All Rights Reserved.</div>
         </div>
     </div>
+    <SfDialog @ref="DialogDelete" IsModal="true" Width="500px" ShowCloseIcon="true" Visible="false">
+        <DialogTemplates>
+            <Header> Confirm Delete </Header>
+            <Content> Please confirm that you want to delete this record </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="Delete" IsPrimary="true" OnClick="@ConfirmDeleteYes" />
+            <DialogButton Content="Cancel" IsPrimary="false" OnClick="@ConfirmDeleteNo" />
+        </DialogButtons>
+    </SfDialog>
+
+    @if (modal)
+    {
+        <ConfirmDelete Title="Delete Confirmation">
+            <h6 class="mt-2">
+                Are you sure to delete?
+            </h6>
+            <div class="dialog-buttons  text-right mt-2">
+                <button type="button" class="btn btn-default border" @onclick="Closepopup" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger  text-white" @onclick="Delete">Delete</button>
+            </div>
+        </ConfirmDelete>
+    }
     @if (popup)
     {
         <div class="modal" style="display:block">
@@ -355,35 +409,41 @@
         </div>
     }
 
-    @if (modal)
-    {
-        <div class="modal " style="display:block">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-light">
-                        <h4 class="text-danger ">Delete Confirmation </h4>
-                    </div>
-                    <div class="modal-body">
-                        <h6>Are you sure to delete?</h6>
-                    </div>
-                    <div class="modal-footer bg-light">
-                        <button type="button" class="btn " @onclick="Closepopup" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-danger  text-white" @onclick="Delete">Delete</a>
+    @* @if (modal)
+        {
+            <div class="modal " style="display:block">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-light">
+                            <h4 class="text-danger ">Delete Confirmation </h4>
+                        </div>
+                        <div class="modal-body">
+                            <h6>Are you sure to delete?</h6>
+                        </div>
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn " @onclick="Closepopup" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-danger  text-white" @onclick="Delete">Delete</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }*@
 </body>
 </html>
 @code {
     [Parameter]
     public int Lid { get; set; }
+    [Parameter]
+    public Lead SelectedDetails { get; set; }
     public List<Lead> lead { get; set; } = new();
+    private List<ItemModel> Toolbaritems = new List<ItemModel>();
     Lead leadClass = new Lead();
+    public SfGrid<Lead> leadGrid { get; set; }
+    private string SaveButton;
+    SfDialog DialogDelete;
+
     protected override async Task OnInitializedAsync()
     {
-        await JSRuntime.InvokeAsync<object>("TestDataTablesAdd", "#example");
         lead = await leadServices.GetAll();
         leadList = lead;
         base.OnInitialized();
@@ -396,7 +456,6 @@
     bool popup = false;
     protected async void Showpopup(int Id)
     {
-
         modal = true;
         leadClass = await leadServices.GetbyId(Id);
     }
@@ -404,20 +463,17 @@
     {
         popup = false;
         modal = false;
-
     }
     protected async void Update(Lead obj)
     {
         popup = true;
         leadClass = await leadServices.GetbyId(obj.Lid);
-
     }
     public async void submit()
     {
         popup = false;
         leadServices.Update(leadClass);
         await leadServices.Save();
-
     }
     public async void Delete()
     {
@@ -434,7 +490,6 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
-
     private bool dropmenu = true;
     private string drop => dropmenu ? "none" : "block";
     private void dropdown()
@@ -471,6 +526,119 @@
         }
 
     }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    private async void Onconfirm()
+    {
+        modal = false;
+        leadServices.Delete(leadClass);
+        lead.Remove(leadClass);
+        await leadServices.Save();
 
+    }
 
+    public string GetHeaderText(Lead lead)
+    {
+        if (lead.Lid == 0)
+        {
+            SaveButton = "Add";
+            return "Add New Customer";
+        }
+        else
+        {
+            SaveButton = "Update";
+            return $"Edit {lead.Lname} Details";
+        }
+    }   
+    public async Task Cancel()
+    {
+        await leadGrid.CloseEditAsync();
+    }
+    public async void Save()
+    {
+        leadServices.Update(leadClass);
+        await leadServices.Save();
+        await leadGrid.CloseEditAsync();
+    }
+
+    public string[] MenuItems = new string[] { "Group", "Ungroup", "ColumnChooser", "Filter" };
+    public void CustomizeCell(QueryCellInfoEventArgs<Lead> args)
+    {
+        if (args.Column.Field == "LProject_Name")
+        {
+            if (args.Data.LProject_Name == "FieldGroov")
+            {
+                args.Cell.AddClass(new string[] { "FieldGroov" });
+            }
+            else if (args.Data.LProject_Name == "BOC")
+            {
+                args.Cell.AddClass(new string[] { "BOC" });
+            }
+            else
+            {
+                args.Cell.AddClass(new string[] { "MOP" });
+            }
+        }
+        if (args.Column.Field == "Lname")
+        {
+            args.Cell.AddStyle(new string[] { "color:#007bff;cursor:pointer" });
+        }
+    }
+   @* public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Text == "Add")
+        {
+            Lid = 0;
+            navigationManager.NavigateTo($"/Add/{Lid}");
+        }
+        if (args.Item.Text == "Edit")
+        {
+            if (Lid > 0)
+            {
+                navigationManager.NavigateTo($"/Add/{Lid}");
+            }
+        }
+        if (args.Item.Text == "Delete")
+        {
+            if (Lid > 0)
+            {
+                DialogDelete.ShowAsync();
+            }
+
+        }
+    }*@
+
+public void RowSelectHandler(RowSelectEventArgs<Lead> args)
+{
+    Lid = args.Data.Lid;
+    SelectedDetails = args.Data;
 }
+public async void ConfirmDeleteNo()
+{
+    await DialogDelete.HideAsync();
+}
+
+public async void ConfirmDeleteYes()
+{
+    leadServices.Delete(SelectedDetails);
+    await leadServices.Save();
+    await DialogDelete.HideAsync();
+
+    lead =await leadServices.GetAll();
+    StateHasChanged();
+}
+private DialogSettings DialogParams = new DialogSettings { MinHeight = "400px", Width = "450px" };
+}
+<style>
+    .BOC {
+        background-color: orangered;
+    }
+
+    .MOP {
+        background-color: yellow;
+    }
+
+    .FieldGroov {
+        background-color: greenyellow
+    }
+</style>

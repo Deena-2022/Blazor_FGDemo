@@ -1,0 +1,121 @@
+﻿@page "/Add/{Lid:int}"
+@inject ILeadServices leadService
+@inject NavigationManager NavigationManager
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+<h1>@pagetitle</h1>
+
+<SfDialog IsModal="true" Width="500px" ShowCloseIcon="false" Visible="true">
+
+    <h5>@pagetitle</h5>
+    <EditForm Model="@lead" OnValidSubmit="@CountriesSave">
+        <div>
+            <SfTextBox Enabled="@enable" Placeholder="ID"  
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.Lid.ToString()"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Name"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.Lname"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Project name"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LProject_Name"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Status"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LStatus"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Added"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LAdded"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Type"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LType"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Contact"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LContact"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Action"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LAction"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="Assignee"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LAssignee"></SfTextBox>
+        </div>
+        <div>
+            <SfTextBox Enabled="true" Placeholder="BidDate"
+                       FloatLabelType="@FloatLabelType.Always"
+                       @bind-Value="lead.LBid_Date"></SfTextBox>
+        </div>
+        <br /><br />
+        <div class="e-footer-content">
+            <div class="button-container">
+
+                <button type="submit" class="btn btn-primary">@SaveButton</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="@Cancel">Cancel</button>
+            </div>
+        </div>
+    </EditForm>
+
+</SfDialog>
+
+@code {
+    // Create a new, empty Countries object
+    Lead lead = new Lead();
+    private string SaveButton;
+    public string pagetitle = "Add a person";
+    private bool enable;
+    [Parameter]
+    public int Lid { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        if (Lid == 0)
+        {
+            enable = true;
+            pagetitle = "Add a person";
+            SaveButton = "Add";
+        }
+        else
+        {
+            enable = false;
+            SaveButton = "Update";
+            pagetitle = $"Edit Id:{Lid} details";
+            lead = await leadService.GetbyId(Lid);
+        }
+
+    }
+    // Executes OnValidSubmit of EditForm above.
+    protected async Task CountriesSave()
+    {
+        if (Lid == 0)
+        {
+            await leadService.Add(lead);
+        }
+        else
+        {
+            leadService.Update(lead);
+        }
+
+        NavigationManager.NavigateTo("LeadsPage");
+    }
+
+    //Executes if user clicks the Cancel button.
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("LeadsPage");
+    }
+
+}

@@ -13,10 +13,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NSwag.AspNetCore" Version="13.16.1" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="20.3.0.47" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="20.3.0.48" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="20.3.0.48" />
+    <PackageReference Include="Syncfusion.Blazor.TreeMap" Version="20.3.0.48" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FG.DataEntity\FG.DataEntity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

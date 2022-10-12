@@ -19,7 +19,8 @@ namespace BlazorUI.services
         }
         public async Task Add(T entity)
         {
-            await context.Set<T>().AddAsync(entity);
+            context.Set<T>().Add(entity);
+            await Save();
         }
 
         public  void Delete(T Entity)
