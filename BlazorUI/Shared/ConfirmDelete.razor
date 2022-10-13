@@ -1,28 +1,27 @@
-﻿
-<div class="dialog-container">
-    <div class="dialog">
-        <div class="dialog-title">
-            <h2>@Title</h2>
-        </div>
-
-        <div class="dialog-body">
-            @ChildContent
-        </div>
-
+﻿<div class="dialog-container">
+<div class="dialog">
+    <div class="dialog-title">
+        <h2>@Title</h2>
     </div>
+
+    <div class="dialog-body">
+        @ChildContent
+    </div>
+
+</div>
 </div>
 
 
 @code {
 
-    [Parameter]
-    public string Title { get; set; }
+[Parameter]
+public string Title { get; set; }
 
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+[Parameter]
+public RenderFragment ChildContent { get; set; }
 
-    [Parameter]
-    public bool modal { get; set; }
+[Parameter]
+public bool modal { get; set; }
 
 }

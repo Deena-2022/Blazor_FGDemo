@@ -9,57 +9,26 @@
 <SfDialog IsModal="true" Width="500px" ShowCloseIcon="false" Visible="true">
 
     <h5>@pagetitle</h5>
-    <EditForm Model="@lead" OnValidSubmit="@CountriesSave">
-        <div>
-            <SfTextBox Enabled="@enable" Placeholder="ID"  
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.Lid.ToString()"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Name"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.Lname"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Project name"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LProject_Name"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Status"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LStatus"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Added"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LAdded"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Type"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LType"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Contact"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LContact"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Action"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LAction"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="Assignee"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LAssignee"></SfTextBox>
-        </div>
-        <div>
-            <SfTextBox Enabled="true" Placeholder="BidDate"
-                       FloatLabelType="@FloatLabelType.Always"
-                       @bind-Value="lead.LBid_Date"></SfTextBox>
-        </div>
+    <EditForm Model="@leadClass" OnValidSubmit="@CountriesSave">
+        <input type="hidden" @bind-value="leadClass.Lid">
+        <label for="exampleInputEmail1">Name :</label>
+        <input type="text" class="form-control" @bind-value="leadClass.Lname" required>
+        <label for="exampleInputEmail1">Project_Name :</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LProject_Name" required>
+        <label for="exampleInputEmail1">Status :</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LStatus" required>
+        <label for="exampleInputEmail1">Added :</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LAdded" required>
+        <label for="exampleInputEmail1">Type:</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LType" required>
+        <label for="exampleInputEmail1">Contact:</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LContact">
+        <label for="exampleInputEmail1">Action:</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LAction" required>
+        <label for="exampleInputEmail1">Assignee:</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LAssignee" required>
+        <label for="exampleInputEmail1">Bid_Date:</label>
+        <input type="text" class="form-control" @bind-value="leadClass.LBid_Date" required>
         <br /><br />
         <div class="e-footer-content">
             <div class="button-container">
@@ -74,7 +43,7 @@
 
 @code {
     // Create a new, empty Countries object
-    Lead lead = new Lead();
+    Lead leadClass = new Lead();
     private string SaveButton;
     public string pagetitle = "Add a person";
     private bool enable;
@@ -93,7 +62,7 @@
             enable = false;
             SaveButton = "Update";
             pagetitle = $"Edit Id:{Lid} details";
-            lead = await leadService.GetbyId(Lid);
+            leadClass = await leadService.GetbyId(Lid);
         }
 
     }
@@ -102,11 +71,12 @@
     {
         if (Lid == 0)
         {
-            await leadService.Add(lead);
+            await leadService.Add(leadClass);
         }
         else
         {
-            leadService.Update(lead);
+            leadService.Update(leadClass);
+            await leadService.Save();
         }
 
         NavigationManager.NavigateTo("LeadsPage");

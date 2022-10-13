@@ -305,9 +305,9 @@
                             AllowGrouping="true" ColumnMenuItems=@MenuItems AllowFiltering="true" ShowColumnMenu="true" AllowPaging="true">
                         <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
                         <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
-                        <GridEvents TValue="Lead" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell" ></GridEvents>
-                        <GridPageSettings PageSize="2"></GridPageSettings>
-                        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true" Dialog="DialogParams" >
+                        <GridEvents TValue="Lead" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell" OnToolbarClick="ToolbarClickHandler" ></GridEvents>
+                        <GridPageSettings PageSizes="true"></GridPageSettings>
+                        <GridEditSettings AllowAdding="true"  AllowEditing="true" AllowDeleting="true">
                             <HeaderTemplate>@GetHeaderText(context as Lead)</HeaderTemplate>
                             <FooterTemplate>
                                 <SfButton OnClick="@Save" IsPrimary="true">@SaveButton</SfButton>
@@ -584,7 +584,7 @@
             args.Cell.AddStyle(new string[] { "color:#007bff;cursor:pointer" });
         }
     }
-   @* public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+   public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Text == "Add")
         {
@@ -606,7 +606,7 @@
             }
 
         }
-    }*@
+    }
 
 public void RowSelectHandler(RowSelectEventArgs<Lead> args)
 {
